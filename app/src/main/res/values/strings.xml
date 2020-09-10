@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">open-market</string>
+    <string name="chose_country">Donde buscas ?</string>
+<!--    <string name="flag_test">&#127462;&#127479;></string>-->
+    <string name="flag_test">Flag</string>
+    <string name="flag_name_test">Argentina</string>
+    <string name="search_suggestion_hint">Comida, ropa, auto ...</string>
+    <string name="bad_face">:(</string>
+    <string name="bad_face_description">Esta vacio aun</string>
+</resources>
