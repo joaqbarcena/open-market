@@ -4,7 +4,13 @@
 <!--    <color name="colorPrimaryDark">#FBC02D</color>-->
 <!--    <color name="colorAccent">#D81B60</color>-->
 
-    <color name="colorPrimary">#eceff1</color>
-    <color name="colorPrimaryDark">#babdbe</color>
+    <color name="colorPrimary">#fafafa</color>
+    <color name="colorPrimaryDark">#c7c7c7</color>
     <color name="primaryLightColor">#0000695C</color>
+
+    <color name="colorPrimaryInv">#424242</color>
+    <color name="colorPrimaryDarkInv">#1b1b1b</color>
+
+    <color name="green_free">#00C853</color>
+
 </resources>

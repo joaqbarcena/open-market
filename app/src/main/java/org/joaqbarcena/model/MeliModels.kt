@@ -1,6 +1,7 @@
 package org.joaqbarcena.model
 
 import com.google.gson.annotations.SerializedName
+import java.util.concurrent.locks.Condition
 import java.util.jar.Attributes
 
 
@@ -20,7 +21,12 @@ data class SearchResult(
     val siteId: String,
     val query: String,
     val paging: PagingInfo,
-    val results: List<Item>
+    val results: List<Item>,
+
+    //Error
+    val message:String?,
+    val error:String?,
+    val status:Int?
 )
 
 data class PagingInfo(
@@ -32,6 +38,15 @@ data class PagingInfo(
 )
 
 data class Item(
+    val id: String,
+    val title: String,
+    val price: Float,
+    val condition: String,
+    val thumbnail: String,
+    val shipping: Shipping
+)
+
+data class ItemComplete(
     val id: String,
     val site_id: String,
     val title: String,
@@ -151,3 +166,35 @@ data class Attribute(
     val source: Long?,
     val id: String?
 )
+
+data class Pictures(
+    val url: String,
+    @SerializedName("secure_url")
+    val secureUrl: String,
+    val size: String,
+    @SerializedName("max_size")
+    val maxSize: String,
+    val quality: String,
+    val id: String
+)
+
+data class PicturesResult(
+    val pictures: List<Pictures>,
+
+    //Error
+    val message:String?,
+    val error:String?,
+    val status:Int?
+)
+
+data class DescriptionResult (
+    @SerializedName("plain_text")
+    val plainText: String,
+
+    //Error
+    val message:String?,
+    val error:String?,
+    val status:Int?
+)
+
+//{"message":"Item descriptions of item id MLA756390877 not found","error":"not_found","status":404,"cause":[]}

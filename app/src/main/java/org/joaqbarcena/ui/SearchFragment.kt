@@ -33,6 +33,9 @@ import android.app.Activity
 import androidx.core.content.ContextCompat.getSystemService
 //import android.R
 import android.view.inputmethod.InputMethodManager
+import androidx.appcompat.widget.SearchView
+import org.joaqbarcena.Fragments
+import android.database.DataSetObserver
 
 
 class SearchFragment : Fragment() {
@@ -62,14 +65,18 @@ class SearchFragment : Fragment() {
                 if(searchResult.paging.total > 0){
                     no_products.visibility = View.INVISIBLE
                     loading_iv.visibility = View.GONE
+
                     results.apply {
-                        results.setHasFixedSize(true)
-                        results.visibility = View.VISIBLE
-                        results.layoutManager = LinearLayoutManager(context)
-                        results.adapter = SearchResultAdapter(searchResult.results) {
-                            d(TAG, "Item pressed ${it.title} - ${it.id}")
+                        setHasFixedSize(true)
+                        visibility = View.VISIBLE
+                        layoutManager = LinearLayoutManager(context)
+                        adapter = SearchResultAdapter(searchResult.results) {
+                            mainViewModel.item = it
+                            (activity as MainActivity).showFragment(Fragments.PRODUCT)
                         }
                     }
+//                    (results.adapter as SearchResultAdapter)
+//                        .update(searchResult.results)
                 } else {
                     no_products.visibility = View.VISIBLE
                     results.visibility = View.INVISIBLE
@@ -93,6 +100,14 @@ class SearchFragment : Fragment() {
             result
         }
 
+        cancel.setOnClickListener {
+            search_text.text.clear()
+            hideKeyboard()
+            no_products.visibility = View.VISIBLE
+            results.visibility = View.INVISIBLE
+            loading_iv.visibility = View.GONE
+        }
+
     }
 
     fun hideKeyboard() {
@@ -102,10 +117,19 @@ class SearchFragment : Fragment() {
 
 }
 
-
-class SearchResultAdapter(private val dataSrc: List<Item>,
-                          private val onClick: (Item) -> Unit)
+//TODO Seguir pidiendo mas items con offset/limit a medida que vaya scrolleando
+class SearchResultAdapter(
+    private val dataSrc: List<Item> = mutableListOf(),
+    private val onClick: (Item) -> Unit)
     : RecyclerView.Adapter<SearchResultAdapter.ViewHolder>() {
+    val TAG = SearchResultAdapter::class.java.name
+
+
+//    fun update(l: List<Item>) {
+//        d(TAG,l.toString())
+//        dataSrc.addAll(l)
+//        notifyDataSetChanged()
+//    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
         ViewHolder(LayoutInflater
@@ -115,8 +139,10 @@ class SearchResultAdapter(private val dataSrc: List<Item>,
     override fun getItemCount(): Int = dataSrc.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.itemPrice.text = dataSrc[position].price.toString()
+        holder.itemPrice.text = "$ ${dataSrc[position].price}"
         holder.itemTitle.text = dataSrc[position].title
+        holder.itemShipping.visibility =
+            if(dataSrc[position].shipping.freeShipping) View.VISIBLE else View.GONE
         Glide.with(holder.itemView.context)
             .load(dataSrc[position].thumbnail.replaceFirst("http","https"))
             .into(holder.itemThumbnail)
@@ -127,6 +153,7 @@ class SearchResultAdapter(private val dataSrc: List<Item>,
         val itemThumbnail : AppCompatImageView = itemView.item_thumbnail as AppCompatImageView
         val itemTitle : MaterialTextView = itemView.item_title as MaterialTextView
         val itemPrice : MaterialTextView = itemView.item_price as MaterialTextView
+        val itemShipping : MaterialTextView = itemView.item_shipping as MaterialTextView
         lateinit var item: Item
 
         init {

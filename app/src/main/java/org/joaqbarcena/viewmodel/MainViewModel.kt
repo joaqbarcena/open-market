@@ -5,6 +5,7 @@ import android.util.Log.e
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import org.joaqbarcena.model.Item
 import org.joaqbarcena.model.Site
 import org.joaqbarcena.net.api
 import org.joaqbarcena.repository.Repository
@@ -23,7 +24,9 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             api.availableSites().enqueue(object : Callback<List<Site>> {
 
                 override fun onResponse(call: Call<List<Site>>, response: Response<List<Site>>){
-                    response.body()?.run { it.value = this.sortedBy { it.name } }
+                    response.body()?.run {
+                        it.value = this.sortedBy { it.name }
+                    }
                 }
 
                 override fun onFailure(call: Call<List<Site>>, t: Throwable) {
@@ -43,5 +46,5 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             }
         }
 
-
+    var item: Item? = null
 }
