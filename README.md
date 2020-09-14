@@ -1,4 +1,4 @@
-## Ejemplo de las Apis de Mercado Libre
+## Ejemplo de la Api de Mercado Libre
 
 
 ### Se utilizaron los recursos :
@@ -7,7 +7,7 @@
 - `/items/{item}` : Para obtener solos las fotos (con `?attributes=pictures`)
 - `/items/{item}/description` : Para obtener solo la descripcion  (con `?attributes=plain_text`)
 
-Dentro de todo las API docs son claras excepto cuando habla del item per-se,
+Dentro de todo las API docs son claras excepto cuando habla del  item per-se,
 esta bien orientada para apps que funcionen como tool para subir y updatear
 data en ML, ya que los `GET` para los recursos dentro de `/items` mas bien los deduci
 de las docs que hablan sobre los item con (POST, PUT, DELETE).
